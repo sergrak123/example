@@ -25,12 +25,14 @@ namespace MethodRungeKutta
             textBox4.Text = N.ToString();
             label11.Text = "";
 
+            //label3.Visible = false;
+            //label7.Visible = false;
+            //textBox1.Visible = false;
+
         }
         private void CalculateAll()
         {
             button1.Enabled = false;
-            //string func = "x ^ 2 / (x ^ 4 + 4 + Sin(x)) * Sin(x / 2)";
-            //string func = "((x + 2) ^ 2 / (5 + Sin(x))) ^ Sin(x)";
             string func = textBox1.Text;
             DifferentialEquations equation = new DifferentialEquations();
             double t0 = 0;
@@ -75,9 +77,21 @@ namespace MethodRungeKutta
             chart1.Series[0].Points.Clear();
             chart2.Series[0].Points.Clear();
 
+            Calc(equation, N);
+
+
+            //Вручную
+            //CalcM(equation, N);
+            label11.Visible = false;
+
+
+        }
+
+
+        public void Calc(DifferentialEquations equation, int N)
+        {
             double errorMax = 0;
             double errorMin = 0;
-
             equation.FindLocalErrors(out errorMax, out errorMin);
             for (int i = 0; i < N; i++)
             {
@@ -89,9 +103,25 @@ namespace MethodRungeKutta
             {
                 chart1.Series[0].Points.AddXY(equation.arrtn[k], equation.arrXn[k]);
             }
-            label11.Visible = false;
 
+        }
+        //Просчет для функции, заданной вручную
+        public void CalcM(DifferentialEquations equation, int N)
+        {
 
+            double errorMax = 0;
+            double errorMin = 0;
+            equation.FindLocalErrorsM(out errorMax, out errorMin);
+            for (int i = 0; i < N; i++)
+            {
+                chart2.Series[0].Points.AddXY(i, equation.errors[i]);
+            }
+
+            equation.DecisionM(N);
+            for (int k = 0; k < N; k++)
+            {
+                chart1.Series[0].Points.AddXY(equation.arrtn[k], equation.arrXn[k]);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
