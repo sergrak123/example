@@ -38,18 +38,18 @@ namespace MethodRungeKutta
         {
             errors = new double[N];
 
-            //Расчет значений для 2N интервалов
+            //2N интервалов
             Decision(2 * N);
             double[] arrxn = new double[2 * N];
             arrXn.CopyTo(arrxn, 0);
 
-            //Расчет значений для N интервалов(увеличивая шаг)
+            //N интервалов(увеличиваем шаг)
             Decision(N);
             errorMax = 0;
             errorMin = 0;
             for (int k = 0; k < N; k++)
             {
-                //Расчет ошибки по правилу Рунге
+                //Ошибка по правилу Рунге
                 errors[k] = (arrxn[2 * k] - arrXn[k]) * Math.Pow(2, 4) / (Math.Pow(2, 4) - 1);
                 if (errors[k] > errorMax)
                     errorMax = errors[k];
